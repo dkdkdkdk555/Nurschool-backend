@@ -3,6 +3,7 @@ package com.nurse.school.entity;
 import com.nurse.school.entity.common.Audit;
 import com.nurse.school.entity.common.AuthStatus;
 import com.nurse.school.entity.common.PaymentStatus;
+import lombok.Getter;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
  * 보건교사 정보
  */
 @Entity
+@Getter
 @Table(name = "user_info")
 public class User {
 
@@ -48,5 +50,15 @@ public class User {
     @Embedded
     private Audit auditInfo;
 
-
+    public User(School school, String name, String loginId, String password, PaymentStatus payYn, String tel_no, String sign_terms_yn, AuthStatus authYn, int login_fail_count) {
+        this.school = school;
+        this.name = name;
+        this.loginId = loginId;
+        this.password = password;
+        this.payYn = payYn;
+        this.tel_no = tel_no;
+        this.sign_terms_yn = sign_terms_yn;
+        this.authYn = authYn;
+        this.login_fail_count = login_fail_count;
+    }
 }

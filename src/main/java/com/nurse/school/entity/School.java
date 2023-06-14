@@ -2,6 +2,7 @@ package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.Audit;
 import com.nurse.school.entity.common.PaymentStatus;
+import lombok.Getter;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "school_info")
+@Getter
 public class School {
 
     @Id @GeneratedValue
@@ -32,6 +34,14 @@ public class School {
     @Embedded
     private Audit auditInfo;
 
+    public School(String name, String bizNum, String schoolTel, String schoolAddr) {
+        this.name = name;
+        this.bizNum = bizNum;
+        this.schoolTel = schoolTel;
+        this.schoolAddr = schoolAddr;
+    }
 
+    protected School() {
 
+    }
 }
