@@ -17,6 +17,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        System.out.println("이름이름  : "+ authentication.getName().toString());
         User user = userService.findOneByLoginId(authentication.getName().toString());
         if(user==null) throw new BadCredentialsException("Not Found User");
         String reqPassword = authentication.getCredentials().toString();user.getPassword();

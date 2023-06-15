@@ -16,3 +16,9 @@ spring:
 logging:
   level:
     org.hibernate.sql: debug # 생성 sql이 logger를 찍어서 보이도록
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true
