@@ -2,6 +2,7 @@ package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.Audit;
 import com.nurse.school.entity.common.PaymentStatus;
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -19,10 +20,10 @@ public class School {
     @Column(name = "workspace_id")
     private Long id; // PK
 
-    @Column(name = "school_name")
+    @Column(name = "school_name", nullable = false)
     private String name; // 학교명
 
-    @Column(name = "school_biz_num")
+    @Column(name = "school_biz_num", nullable = false)
     private String bizNum; // 사업자번호
 
     @Column(name = "school_tel")
