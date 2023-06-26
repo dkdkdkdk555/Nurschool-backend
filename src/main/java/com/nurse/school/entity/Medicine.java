@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "medicine_stock")
 public class Medicine {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stock_id")
     private Long id;
 

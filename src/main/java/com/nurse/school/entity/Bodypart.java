@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "body_system")
 public class Bodypart {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "system_id")
     private Long id;
 

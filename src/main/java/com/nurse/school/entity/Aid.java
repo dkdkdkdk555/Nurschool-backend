@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "health_document_aid")
 public class Aid {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_aid_id")
     private Long id;
 

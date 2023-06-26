@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "person_info")
 public class Person {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id")
     private Long id;
 

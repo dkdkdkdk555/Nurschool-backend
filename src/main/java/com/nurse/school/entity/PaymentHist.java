@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "payment_history")
 public class PaymentHist {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
     private Long id;
 

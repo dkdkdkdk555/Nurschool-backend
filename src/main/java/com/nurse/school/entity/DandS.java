@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "disease_and_symptom")
 public class DandS {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ds_id")
     private Long id;
 

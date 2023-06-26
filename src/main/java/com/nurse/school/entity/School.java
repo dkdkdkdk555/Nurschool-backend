@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 public class School {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workspace_id")
     private Long id; // PK
 
