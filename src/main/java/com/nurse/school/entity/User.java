@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class User {
 
     private String sign_terms_yn; // 약관동의 여부, 기본 Y
 
-    private String role; // 권한 ROLE_USER + workspace_id 이런식으로 생성
+    private String roles; // 권한 ROLE_USER + workspace_id 이런식으로 생성
 
     private int login_fail_count; // 로그인 실패 횟수
 
@@ -53,4 +54,10 @@ public class User {
     private Audit auditInfo;
 
 
+    public List<String> getRoleList(){ // 역할이 하나 계정당 두개 이상 있는경우..
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
 }
