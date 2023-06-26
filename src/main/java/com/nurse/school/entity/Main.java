@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "health_document_main")
 public class Main {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
     private Long id;
 

@@ -2,7 +2,6 @@ package com.nurse.school.controller;
 
 import com.nurse.school.entity.School;
 import com.nurse.school.entity.User;
-import com.nurse.school.entity.common.AuthStatus;
 import com.nurse.school.entity.common.PaymentStatus;
 import com.nurse.school.service.SchoolService;
 import com.nurse.school.service.UserService;
@@ -27,10 +26,10 @@ public class InitUser {
 
         School school1 = schoolService.findOne(id).get();
 
-        User user = new User(school1, "박욱현", "dkdkdkdk555@naver.com", "ss2022", PaymentStatus.Y,
-                "010-2868-8557", "Y", AuthStatus.Y, 0);
+//        User user = new User(school1, "박욱현", "dkdkdkdk555@naver.com", "ss2022", PaymentStatus.Y,
+//                "010-2868-8557", "Y",, 0);
 
-        userService.join(user);
+//        userService.join(user);
 
     }
 }

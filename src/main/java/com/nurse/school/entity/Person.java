@@ -1,6 +1,7 @@
 package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.Audit;
+import com.nurse.school.entity.common.PaymentStatus;
 import com.nurse.school.entity.common.Persontype;
 
 import javax.persistence.*;
@@ -37,9 +38,12 @@ public class Person {
     private Persontype persontype; // 학생(STUDENT) or 교직원(STAFF)
 
     private Boolean patient_yn; // 요양호자 여부
+
     private int grade; // 학년
+
     @Column(name = "class")
     private String clss; // 반
+
     private int class_id; // 반에서 번호
 
     @Embedded
