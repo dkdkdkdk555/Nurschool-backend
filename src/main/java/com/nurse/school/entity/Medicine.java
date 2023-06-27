@@ -1,7 +1,5 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-
 import javax.persistence.*;
 
 /**
@@ -28,8 +26,8 @@ public class Medicine {
     @Column(name = "stock_quantity")
     private int stockQuantity; // 남은 재고 수
 
-    @Embedded
-    private Audit auditInfo;
+    
+
 
 
 

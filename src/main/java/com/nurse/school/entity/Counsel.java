@@ -1,7 +1,5 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-
 import javax.persistence.*;
 
 /**
@@ -25,6 +23,6 @@ public class Counsel {
     @JoinColumn(name = "workspace_id")
     private School school;
 
-    @Embedded
-    private Audit auditInfo;
+    
+    
 }

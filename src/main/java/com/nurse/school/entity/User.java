@@ -1,16 +1,12 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
+import com.nurse.school.entity.common.BaseEntity;
 import com.nurse.school.entity.common.PaymentStatus;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -20,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user_info")
-public class User { // 23.6.27.화 _ ERD 반영
+public class User extends BaseEntity { // 23.6.27.화 _ ERD 반영
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -51,10 +47,6 @@ public class User { // 23.6.27.화 _ ERD 반영
     private String roles; // 권한 ROLE_USER + workspace_id 이런식으로 생성
 
     private int login_fail_count; // 로그인 실패 횟수
-
-    @Embedded
-    private Audit auditInfo;
-
 
     public List<String> getRoleList(){ // 역할이 하나 계정당 두개 이상 있는경우..
         if(this.roles.length() > 0){

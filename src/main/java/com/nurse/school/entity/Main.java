@@ -1,7 +1,5 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -30,7 +28,7 @@ public class Main {
 
     private String memo; // 특이사항 등 메모
 
-    @Embedded
-    private Audit auditInfo;
+    
+    
 
 }

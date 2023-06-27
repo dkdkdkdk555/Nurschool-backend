@@ -1,10 +1,6 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-import com.nurse.school.entity.common.PaymentStatus;
-import com.sun.istack.NotNull;
 import lombok.Getter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 
@@ -32,8 +28,8 @@ public class School {
     @Column(name = "school_address")
     private String schoolAddr; // 학교 주소
 
-    @Embedded
-    private Audit auditInfo;
+    
+    
 
     public School(String name, String bizNum, String schoolTel, String schoolAddr) {
         this.name = name;
