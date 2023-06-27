@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user_info")
-public class User {
+public class User { // 23.6.27.화 _ ERD 반영
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -44,7 +44,9 @@ public class User {
 
     private String user_tel; // 연락처
 
-    private String sign_terms_yn; // 약관동의 여부, 기본 Y
+    private String sign_terms_yn; // 필수 약관동의 여부
+
+    private String ad_terms_yn; // 광고성 약관 동의 여부
 
     private String roles; // 권한 ROLE_USER + workspace_id 이런식으로 생성
 

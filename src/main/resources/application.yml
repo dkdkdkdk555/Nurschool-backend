@@ -2,8 +2,8 @@ spring:
   datasource:
 #    url: jdbc:h2:tcp://localhost/~/nurschool # ;MVCC=TRUE 는 DB커넥션 여러개 허용하는것,, 권장옵션임
     url: jdbc:mariadb://localhost:3306/nurschool
-    username: root
-    password: R5ervh2022@@
+    username: dkdkdkdk555
+    password: ss2022
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
