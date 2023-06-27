@@ -83,7 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = JWT.create()
                 .withSubject("욱하토큰") // 토큰이름 (별의미없음)
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 유효시간
-                .withClaim("password", principalDetails.getUser().getPassword())
+                .withClaim("id", principalDetails.getUser().getId())
                 .withClaim("loginId", principalDetails.getUser().getLoginId())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET)); // 내 서버만 아는 고유한 값이 있어야함
 

@@ -1,5 +1,7 @@
 package com.nurse.school.entity;
 
+import com.nurse.school.entity.common.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "school_info")
 @Getter
-public class School {
+public class School extends BaseEntity { // 23.6.27.화 _ ERD 반영
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workspace_id")
@@ -28,9 +30,7 @@ public class School {
     @Column(name = "school_address")
     private String schoolAddr; // 학교 주소
 
-    
-    
-
+    @Builder
     public School(String name, String bizNum, String schoolTel, String schoolAddr) {
         this.name = name;
         this.bizNum = bizNum;
@@ -38,7 +38,7 @@ public class School {
         this.schoolAddr = schoolAddr;
     }
 
-    protected School() {
+    public School() {
 
     }
 }
