@@ -22,13 +22,12 @@ public class IndexController {
     @PostMapping("/api/v1/join")
     public String join(@RequestBody JoinDto joinDto){
         System.out.println(joinDto.toString());
-        // 패스워드 인코딩
         joinDto.setPw(bCryptPasswordEncoder.encode(joinDto.getPw()));
         userService.join(joinDto);
-
         return "success";  // 리다이렉트
     }
 
+    // 사업자번호 유효성 검사
     @PostMapping("/api/v1/biz_verify")
     public String bizNumVerify(String biznum){
 

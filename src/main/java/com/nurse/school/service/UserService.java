@@ -24,7 +24,7 @@ public class UserService {
     public void join(JoinDto dto){
         User user = null;
         // 이미 등록된 학교정보가 있는지 검증
-        School schoolInfo = schoolRepository.findByNameAndBizNum(dto.getName(), dto.getSchool_biz_num());
+        School schoolInfo = schoolRepository.findByBizNum(dto.getSchool_biz_num());
         if(schoolInfo == null) {// 없으면
             // 신규 학교(워크스페이스)정보 생성
             School school = schoolRepository.save(makeSchool(dto));
