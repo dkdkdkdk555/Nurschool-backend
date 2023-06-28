@@ -1,7 +1,5 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-
 import javax.persistence.*;
 
 /**
@@ -11,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "medicine_stock")
 public class Medicine {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stock_id")
     private Long id;
 
@@ -28,8 +26,8 @@ public class Medicine {
     @Column(name = "stock_quantity")
     private int stockQuantity; // 남은 재고 수
 
-    @Embedded
-    private Audit auditInfo;
+    
+
 
 
 

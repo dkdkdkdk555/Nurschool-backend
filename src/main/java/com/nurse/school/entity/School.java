@@ -1,10 +1,8 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-import com.nurse.school.entity.common.PaymentStatus;
-import com.sun.istack.NotNull;
+import com.nurse.school.entity.common.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 
@@ -14,9 +12,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "school_info")
 @Getter
-public class School {
+public class School extends BaseEntity { // 23.6.27.화 _ ERD 반영
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workspace_id")
     private Long id; // PK
 
@@ -32,9 +30,7 @@ public class School {
     @Column(name = "school_address")
     private String schoolAddr; // 학교 주소
 
-    @Embedded
-    private Audit auditInfo;
-
+    @Builder
     public School(String name, String bizNum, String schoolTel, String schoolAddr) {
         this.name = name;
         this.bizNum = bizNum;
@@ -42,7 +38,7 @@ public class School {
         this.schoolAddr = schoolAddr;
     }
 
-    protected School() {
+    public School() {
 
     }
 }

@@ -1,7 +1,5 @@
 package com.nurse.school.entity;
 
-import com.nurse.school.entity.common.Audit;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "health_document_main")
 public class Main {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
     private Long id;
 
@@ -30,7 +28,7 @@ public class Main {
 
     private String memo; // 특이사항 등 메모
 
-    @Embedded
-    private Audit auditInfo;
+    
+    
 
 }
