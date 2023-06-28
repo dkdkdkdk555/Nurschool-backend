@@ -54,7 +54,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // 서명이 정상적으로 됨
         if(loginId!=null){
             User user = userRepository.findUserByLoginId(loginId);
-            System.out.println("DB Connection :: UserRepository");
 
             PrincipalDetails principalDetails = new PrincipalDetails(user);
             // JWT 토큰 서명이 정상이면 Authentication 객체를 만들어줌

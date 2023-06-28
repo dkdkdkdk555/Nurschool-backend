@@ -39,6 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**")
                 .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
-
+        /**
+         * ROLE_USER ⇒ 유저 권한
+         *   - 이제 막 회원가입 했을때
+         * ROLE_MANAGER ⇒ 보건일지 관리자 권한
+         *   - 회원가입 후 워크스페이스를 생성 하거나워크스페이스에서 이용이 허가된 상태
+         * ROLE_ADMIN ⇒  시스템 관리자 권한
+         *   - 모든 워크스페이스(보건일지)와 모든 학교 정보에 접근할 수 있는 권한
+         */
     }
 }

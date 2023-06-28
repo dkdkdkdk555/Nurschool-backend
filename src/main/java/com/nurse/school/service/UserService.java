@@ -32,7 +32,7 @@ public class UserService {
             // 유저 엔티티 생성
             user = makeUser(dto, school);
             // 권한 생성 및 부여
-            user.setRoles("ROLE_ADMIN");
+            user.setRoles("ROLE_MANAGER");
         } else if(schoolInfo != null){// 있으면
             // 기존 학교 있을 경우, 유저 정보에 FK로 넣음
             user = makeUser(dto, schoolInfo);
