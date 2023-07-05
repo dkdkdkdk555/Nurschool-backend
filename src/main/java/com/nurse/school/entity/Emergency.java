@@ -1,5 +1,8 @@
 package com.nurse.school.entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "health_document_emergency")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Emergency {
 
     @Id

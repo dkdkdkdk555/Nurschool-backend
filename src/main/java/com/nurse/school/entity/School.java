@@ -1,8 +1,10 @@
 package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.BaseEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -12,7 +14,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "school_info")
 @Getter
-public class School extends BaseEntity { // 23.6.27.화 _ ERD 반영
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //서비스에서 생성자로 생성 막음 -> 메소드로 생성하자
+public class School extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workspace_id")
@@ -36,9 +39,5 @@ public class School extends BaseEntity { // 23.6.27.화 _ ERD 반영
         this.bizNum = bizNum;
         this.schoolTel = schoolTel;
         this.schoolAddr = schoolAddr;
-    }
-
-    public School() {
-
     }
 }
