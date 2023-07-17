@@ -6,7 +6,10 @@ import com.nurse.school.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -14,10 +17,10 @@ public class PersonController {
 
     @Autowired PersonService personService;
 
-    @PostMapping("/manager/students/excelupload")
-    public String excelUpload(){ // 엑셀업로드 등록
-
-        return "";
+    @PostMapping("/manager/addExcel")
+    public String excelUpload(HttpServletRequest request, HttpServletResponse response,
+                              MultipartFile file, Long schoolId){ // 엑셀업로드 등록
+        return personService.insertPersonbyExcel(file, schoolId);
     }
 
     @PutMapping("/manager/student") // 1

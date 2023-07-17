@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * [학생교직원 등록조회 페이지]
@@ -14,6 +15,7 @@ import lombok.Getter;
  * INSERT 용 dto
  */
 @Data
+@NoArgsConstructor
 public class PersonInsertDto {
     // 학교
     @NotNull

@@ -2,6 +2,7 @@ package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.BaseEntity;
 import com.nurse.school.entity.common.Persontype;
+import com.querydsl.core.types.EntityPath;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Getter
 @Table(name = "person_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Person extends BaseEntity{
+public class Person extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id")
@@ -66,4 +67,23 @@ public class Person extends BaseEntity{
         this.clss = clss;
         this.class_id = class_id;
     }
+
+    @Builder(builderMethodName = "merger")
+    public Person(Long id, School school, String permanent_id, String name, String gender,
+                  LocalDate birthday, Persontype persontype, String patient_yn,
+                  String grade, String clss, int class_id) {
+        this.id = id;
+        this.school = school;
+        this.permanent_id = permanent_id;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.persontype = persontype;
+        this.patient_yn = patient_yn;
+        this.grade = grade;
+        this.clss = clss;
+        this.class_id = class_id;
+    }
+
+
 }
