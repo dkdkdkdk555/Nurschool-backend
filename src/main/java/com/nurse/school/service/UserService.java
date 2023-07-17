@@ -4,7 +4,7 @@ package com.nurse.school.service;
 import com.nurse.school.dto.JoinDto;
 import com.nurse.school.entity.School;
 import com.nurse.school.entity.User;
-import com.nurse.school.exception.NoCreatDataException;
+import com.nurse.school.exception.NoCreationDataException;
 import com.nurse.school.repository.SchoolRepository;
 import com.nurse.school.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class UserService {
         if(schoolInfo == null) {// 없으면
             // 신규 학교(워크스페이스)정보 생성
             School school = schoolRepository.save(makeSchool(dto));
-            if(school == null) throw new NoCreatDataException("회원 가입에 실패하였습니다.");
+            if(school == null) throw new NoCreationDataException("회원 가입에 실패하였습니다.");
             // 유저 엔티티 생성
             user = makeUser(dto, school);
             // 권한 생성 및 부여
@@ -39,7 +39,7 @@ public class UserService {
             user.setRoles("ROLE_USER");
         }
         userRepository.save(user);
-        if(user.getId() == null) throw new NoCreatDataException("회원 가입에 실패하였습니다.");
+        if(user.getId() == null) throw new NoCreationDataException("회원 가입에 실패하였습니다.");
     }
 
     private User makeUser(JoinDto dto, School school) {

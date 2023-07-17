@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Table(name = "user_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자를 protected로 선언하겠다.
-public class User extends BaseEntity { // 23.6.27.화 _ ERD 반영
+public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
