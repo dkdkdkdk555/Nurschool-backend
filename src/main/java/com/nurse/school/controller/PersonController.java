@@ -17,13 +17,19 @@ public class PersonController {
 
     @Autowired PersonService personService;
 
+    /**
+     * 엑셀업로드 등록
+     */
     @PostMapping("/manager/addExcel")
     public String excelUpload(HttpServletRequest request, HttpServletResponse response,
                               MultipartFile file, Long schoolId){ // 엑셀업로드 등록
         return personService.insertPersonbyExcel(file, schoolId);
     }
 
-    @PutMapping("/manager/student") // 1
+    /**
+     * 수기 등록
+     */
+    @PutMapping("/manager/student")
     public @ResponseBody PersonResponseDto upload(@RequestBody PersonInsertDto dto){ // 수기 등록
 
         PersonResponseDto personResponseDto = personService.insertPerson(dto);
@@ -31,19 +37,25 @@ public class PersonController {
         return personResponseDto;
     }
 
-    @GetMapping("/manager/student") // 2
+    @GetMapping("/manager/student")
     public String peopleList(){ // 학생,교직원 목록 조회 - 페이지 조회
         return "";
     }
 
-    @PostMapping("/manager/student/{personId}") // 3
-    public String updatePersonInfo(){ // 학생교직언 정보 수정
-        return "";
+    /**
+     * 수정
+     */
+    @PostMapping("/manager/student/{personId}")
+    public String updatePersonInfo(@PathVariable("personId") Long personId,
+                                   @RequestBody PersonInsertDto dto){ // 학생교직언 정보 수정
+        return personService.updatePerson(personId, dto);
     }
 
-    @DeleteMapping("/manager/student/{personId}") // 4
-    public String deletePersonInfo(){ // 인원목록에서 삭제 - 단건 삭제
-        return "";
+    /**
+     * 삭제
+     */
+    @DeleteMapping("/manager/student/{personIds}")
+    public String deletePersonInfo(@PathVariable("personIds") String personIds){ // 인원목록에서 삭제 - 단건 삭제
+        return personService.deletePerson(personIds);
     }
-
 }

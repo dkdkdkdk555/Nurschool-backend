@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -89,7 +90,7 @@ public class PersonService {
             // 고유번호 + 이름 일치하는거 있을경우 업데이트 || 신규는 등록
             Person person = personRepository.findPersonByNameAndPermanent_id(dto.getName(), dto.getPerman_id());
             if(person != null){ // 학년, 반, 번호 등 만 수정
-                personRepository.update(dto);
+                personRepository.updateWhenExcelUpload(dto);
                 count++;
             } else {
                 person = Person.builder().grade(dto.getGrade())
@@ -104,9 +105,34 @@ public class PersonService {
                 if(p != null)  count++;
             }
         }
-
-
         return count + "건 등록완료!!!"; // 등록건수 알림
+    }
+
+    @Transactional
+    public String updatePerson(Long personId, PersonInsertDto dto){
+        long s = personRepository.updateDirect(dto, personId);
+        return s + "개 수정완료";
+    }
+
+    @Transactional
+    public String deletePerson(String personIds){
+        if(personIds.contains("&")){
+            String[] personsArr = personIds.split("&");
+            List<Long> list = new ArrayList<>();
+            for (String s : personsArr) {
+                list.add(Long.parseLong(s));
+            }
+            int n = personRepository.deletePersonsByIds(list);
+            return n + "건 삭제";
+        } else {
+            Optional<Person> person = personRepository.findById(Long.parseLong(personIds));
+            if(!person.isEmpty()){
+                personRepository.delete(person.get());
+                return "삭제완료";
+            } else{
+                return "삭제할 데이터가 존재하지 않습니다.";
+            }
+        }
     }
 
     private Person makePersonInfo(PersonInsertDto dto, School school){
@@ -121,6 +147,5 @@ public class PersonService {
                 .persontype(dto.getPersontype())
                 .patient_yn(dto.getPatient_yn() != null ? dto.getPatient_yn() : "N" )
                 .build();
-
     }
 }
