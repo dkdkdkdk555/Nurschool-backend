@@ -1,6 +1,12 @@
 package com.nurse.school.entity;
 
+import com.nurse.school.entity.common.BaseEntity;
 import com.nurse.school.entity.common.Persontype;
+import com.querydsl.core.types.EntityPath;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,8 +15,10 @@ import java.time.LocalDate;
  * 인원정보
  */
 @Entity
+@Getter
 @Table(name = "person_info")
-public class Person {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Person extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id")
@@ -26,7 +34,7 @@ public class Person {
     private String name; // 학생이름
 
     @Column(name = "person_gender")
-    private String gender; // 성별
+    private String gender; // 성별 남성-여성
 
     @Column(name = "person_birthday")
     private LocalDate birthday; // 생년월일
@@ -35,15 +43,47 @@ public class Person {
     @Column(name = "person_type")
     private Persontype persontype; // 학생(STUDENT) or 교직원(STAFF)
 
-    private Boolean patient_yn; // 요양호자 여부
+    private String patient_yn; // 요양호자 여부
 
-    private int grade; // 학년
+    private String grade; // 학년
 
     @Column(name = "class")
     private String clss; // 반
 
     private int class_id; // 반에서 번호
-    
+
+    @Builder
+    public Person(School school, String permanent_id, String name, String gender,
+                  LocalDate birthday, Persontype persontype, String patient_yn,
+                  String grade, String clss, int class_id) {
+        this.school = school;
+        this.permanent_id = permanent_id;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.persontype = persontype;
+        this.patient_yn = patient_yn;
+        this.grade = grade;
+        this.clss = clss;
+        this.class_id = class_id;
+    }
+
+    @Builder(builderMethodName = "merger")
+    public Person(Long id, School school, String permanent_id, String name, String gender,
+                  LocalDate birthday, Persontype persontype, String patient_yn,
+                  String grade, String clss, int class_id) {
+        this.id = id;
+        this.school = school;
+        this.permanent_id = permanent_id;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.persontype = persontype;
+        this.patient_yn = patient_yn;
+        this.grade = grade;
+        this.clss = clss;
+        this.class_id = class_id;
+    }
 
 
 }
