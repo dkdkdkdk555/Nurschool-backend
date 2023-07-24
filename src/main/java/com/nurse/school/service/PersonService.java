@@ -4,9 +4,12 @@ import com.nurse.school.dto.PersonInsertDto;
 import com.nurse.school.dto.PersonResponseDto;
 import com.nurse.school.entity.Person;
 import com.nurse.school.entity.School;
+import com.nurse.school.exception.DoesntMatchExcelFormException;
 import com.nurse.school.exception.NoCreationDataException;
+import com.nurse.school.exception.NotFoundException;
 import com.nurse.school.repository.PersonRepository;
 import com.nurse.school.repository.SchoolRepository;
+import com.nurse.school.response.Result;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -28,12 +31,11 @@ public class PersonService {
     private final ExcelUtil excelUtil;
 
     @Transactional(readOnly = false)
-    public PersonResponseDto insertPerson(PersonInsertDto dto){
+    public PersonResponseDto insertPerson(PersonInsertDto dto) throws NoCreationDataException{
         // 중복 등록 여부 판단
         Person dupl = personRepository.findPersonByPermanent_id(dto.getPerman_id());
         if(dupl != null){
-            new NoCreationDataException("이미 등록된 학생/교직원이 있습니다!");
-            return null;
+            throw new NoCreationDataException("이미 등록된 학생/교직원이 있습니다!");
         }
 
         // 등록
@@ -48,16 +50,16 @@ public class PersonService {
     }
 
     @Transactional
-    public String insertPersonbyExcel(MultipartFile file, Long schoolId){
+    public int insertPersonbyExcel(MultipartFile file, Long schoolId) throws DoesntMatchExcelFormException {
         // 파일이 존재하지 않는 경우
         if(file.isEmpty()){
-            return "Excel 파일을 선택해주세요.1";
+            throw new DoesntMatchExcelFormException("파일이 존재하지 않습니다! 파일을 업로드해 주세요.");
         }
 
         // 확장자 유효성 검사 -> 엑셀파일만 가능
         String contentType = FileNameUtils.getExtension(file.getOriginalFilename());
         if(!contentType.equals("xlsx") && !contentType.equals("xls")){
-            return "Excel 파일을 선택해주세요.2";
+            throw new DoesntMatchExcelFormException("잘못된 형식의 파일입니다! Excel 파일을 선택해 주세요.");
         }
 
         List<PersonInsertDto> personList = new ArrayList<>();
@@ -66,7 +68,7 @@ public class PersonService {
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 6);
 
         if(listMap == null){
-            return "엑셀 양식이 일치하지 않습니다.";
+            throw new DoesntMatchExcelFormException("Excel 양식이 일치하지 않습니다. 올바른 양식의 Excel 파일을 업로드해 주세요.");
         }
 
         for (Map<String, Object> map : listMap) {
@@ -105,18 +107,25 @@ public class PersonService {
                 if(p != null)  count++;
             }
         }
-        return count + "건 등록완료!!!"; // 등록건수 알림
+        return count; // 등록건수 알림
+
     }
 
     @Transactional
-    public String updatePerson(Long personId, PersonInsertDto dto){
+    public Person updatePerson(Long personId, PersonInsertDto dto) throws RuntimeException {
         long s = personRepository.updateDirect(dto, personId);
-        return s + "개 수정완료";
+        if(s>0){
+            Optional<Person> opt = personRepository.findById(personId);
+            Person person = opt.get();
+            return person;
+        } else{
+            throw new RuntimeException("학생교직원 정보 수정에 실패하였습니다.");
+        }
     }
 
     @Transactional
-    public String deletePerson(String personIds){
-        if(personIds.contains("&")){
+    public String deletePerson(String personIds) throws NotFoundException {
+        if(personIds.contains("&")){ // 복수건
             String[] personsArr = personIds.split("&");
             List<Long> list = new ArrayList<>();
             for (String s : personsArr) {
@@ -124,13 +133,13 @@ public class PersonService {
             }
             int n = personRepository.deletePersonsByIds(list);
             return n + "건 삭제";
-        } else {
+        } else { // 단건
             Optional<Person> person = personRepository.findById(Long.parseLong(personIds));
             if(!person.isEmpty()){
                 personRepository.delete(person.get());
                 return "삭제완료";
             } else{
-                return "삭제할 데이터가 존재하지 않습니다.";
+                throw new NotFoundException("삭제할 데이터가 존재하지 않습니다.");
             }
         }
     }

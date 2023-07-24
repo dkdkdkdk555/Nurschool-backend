@@ -2,10 +2,8 @@ package com.nurse.school.repository;
 
 import com.nurse.school.dto.PersonInsertDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import javax.persistence.EntityManager;
 
-import java.util.List;
 
 import static com.nurse.school.entity.QPerson.person;
 
