@@ -1,13 +1,10 @@
-package com.nurse.school.dto;
+package com.nurse.school.dto.person;
 
 
 import com.nurse.school.entity.School;
 import com.nurse.school.entity.common.Persontype;
 import com.sun.istack.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * [학생교직원 등록조회 페이지]
@@ -16,10 +13,11 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class PersonInsertDto {
+public class PersonDto {
     // 학교
     @NotNull
     private Long schoolId; // 사용자가 쥐고잇음
+    private Long personId;
     // 학년
     @NotNull
     private String grade;
@@ -41,4 +39,19 @@ public class PersonInsertDto {
     // 요양호자 여부
     private String patient_yn; // 없으면 N
 
+    // 페이징관련
+    private int page;
+
+    public PersonDto(Long schoolId, Long personId, String grade, String classes, int class_id, String name, String perman_id, String gender, Persontype persontype, String patient_yn) {
+        this.schoolId = schoolId;
+        this.personId = personId;
+        this.grade = grade;
+        this.classes = classes;
+        this.class_id = class_id;
+        this.name = name;
+        this.perman_id = perman_id;
+        this.gender = gender;
+        this.persontype = persontype;
+        this.patient_yn = patient_yn;
+    }
 }

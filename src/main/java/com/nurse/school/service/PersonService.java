@@ -1,7 +1,7 @@
 package com.nurse.school.service;
 
-import com.nurse.school.dto.PersonInsertDto;
-import com.nurse.school.dto.PersonResponseDto;
+import com.nurse.school.dto.person.PersonDto;
+import com.nurse.school.dto.person.PersonResponseDto;
 import com.nurse.school.entity.Person;
 import com.nurse.school.entity.School;
 import com.nurse.school.exception.DoesntMatchExcelFormException;
@@ -9,16 +9,16 @@ import com.nurse.school.exception.NoCreationDataException;
 import com.nurse.school.exception.NotFoundException;
 import com.nurse.school.repository.PersonRepository;
 import com.nurse.school.repository.SchoolRepository;
-import com.nurse.school.response.Result;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.FileNameUtils;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -31,7 +31,7 @@ public class PersonService {
     private final ExcelUtil excelUtil;
 
     @Transactional(readOnly = false)
-    public PersonResponseDto insertPerson(PersonInsertDto dto) throws NoCreationDataException{
+    public PersonResponseDto insertPerson(PersonDto dto) throws NoCreationDataException{
         // 중복 등록 여부 판단
         Person dupl = personRepository.findPersonByPermanent_id(dto.getPerman_id());
         if(dupl != null){
@@ -62,7 +62,7 @@ public class PersonService {
             throw new DoesntMatchExcelFormException("잘못된 형식의 파일입니다! Excel 파일을 선택해 주세요.");
         }
 
-        List<PersonInsertDto> personList = new ArrayList<>();
+        List<PersonDto> personList = new ArrayList<>();
 
         // 엑셀의 셀데이터를 가져와서 dto에 담기
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 6);
@@ -72,7 +72,7 @@ public class PersonService {
         }
 
         for (Map<String, Object> map : listMap) {
-            PersonInsertDto dto = new PersonInsertDto();
+            PersonDto dto = new PersonDto();
 
             // 각 셀의 데이터를 dto에 set
             dto.setGrade(map.get("0").toString());
@@ -88,7 +88,7 @@ public class PersonService {
         Optional<School> school = schoolRepository.findById(schoolId);
 
         int count = 0;
-        for (PersonInsertDto dto : personList) {
+        for (PersonDto dto : personList) {
             // 고유번호 + 이름 일치하는거 있을경우 업데이트 || 신규는 등록
             Person person = personRepository.findPersonByNameAndPermanent_id(dto.getName(), dto.getPerman_id());
             if(person != null){ // 학년, 반, 번호 등 만 수정
@@ -112,7 +112,19 @@ public class PersonService {
     }
 
     @Transactional
-    public Person updatePerson(Long personId, PersonInsertDto dto) throws RuntimeException {
+    public Page<PersonDto> getPeopleList(PersonDto dto) throws NotFoundException{
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), 5, Sort.by(Sort.Direction.ASC, "person_id"));
+        Page<Person> pages = personRepository.findByPersonDto(dto, pageRequest);
+        if(pages.getContent().isEmpty()){
+            throw new NotFoundException("검색결과가 존재하지 않습니다.");
+        }
+        Page<PersonDto> toMap = pages.map(p -> new PersonDto(p.getSchool().getId(), p.getId(), p.getGrade(), p.getClss(), p.getClass_id(),
+                p.getName(), p.getPermanent_id(), p.getGender(), p.getPersontype(), p.getPatient_yn()));
+        return toMap;
+    }
+
+    @Transactional
+    public Person updatePerson(Long personId, PersonDto dto) throws RuntimeException {
         long s = personRepository.updateDirect(dto, personId);
         if(s>0){
             Optional<Person> opt = personRepository.findById(personId);
@@ -144,7 +156,7 @@ public class PersonService {
         }
     }
 
-    private Person makePersonInfo(PersonInsertDto dto, School school){
+    private Person makePersonInfo(PersonDto dto, School school){
         return Person.builder()
                 .school(school)
                 .grade(dto.getGrade())

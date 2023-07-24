@@ -1,4 +1,4 @@
-package com.nurse.school.dto;
+package com.nurse.school.dto.person;
 
 import lombok.Builder;
 import lombok.Data;
