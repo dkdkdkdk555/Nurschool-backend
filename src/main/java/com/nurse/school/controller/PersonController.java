@@ -7,8 +7,12 @@ import com.nurse.school.response.Result;
 import com.nurse.school.service.PersonService;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ import java.net.URI;
 public class PersonController {
 
     @Autowired PersonService personService;
+
+    private final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     /**
      * 엑셀업로드 등록
@@ -81,9 +87,32 @@ public class PersonController {
      * http://localhost:8080/manager/student/2&3 - &으로 구분
      */
     @DeleteMapping("/manager/student/{personIds}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Result> deletePersonInfo(@PathVariable("personIds") String personIds){ // 응답표준화 O
         String result = personService.deletePerson(personIds);
         return new ResponseEntity<>(new Result(result), HttpStatus.NO_CONTENT);
     }
+
+
+    @GetMapping("/manager/getExcelForm")
+    public ResponseEntity<Resource> downloadExcelForm(){
+        try {
+            // 파일 실제 경로 지정 및 로드
+            Resource resource = resourceLoader.getResource("classpath:" + "file/ExcelUploadForm_Nurschool.xlsx");
+
+            // 파일이 존재하는지 확인
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일을 반환하기 위핸 ResponseEntity 생성
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            // 파일 로드에 실패한 경우
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 }
