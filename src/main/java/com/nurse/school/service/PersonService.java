@@ -11,6 +11,12 @@ import com.nurse.school.repository.PersonRepository;
 import com.nurse.school.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.FileNameUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -121,6 +130,112 @@ public class PersonService {
         Page<PersonDto> toMap = pages.map(p -> new PersonDto(p.getSchool().getId(), p.getId(), p.getGrade(), p.getClss(), p.getClass_id(),
                 p.getName(), p.getPermanent_id(), p.getGender(), p.getPersontype(), p.getPatient_yn()));
         return toMap;
+    }
+
+    @Transactional
+    public void getPeopleListForExport(PersonDto personDto, HttpServletResponse res) throws NotFoundException, IOException {
+        List<Person> list = personRepository.findByPersonDto(personDto);
+        if(list.size()==0){
+            throw new NotFoundException("검색결과가 존재하지 않습니다.");
+        }
+        try {
+            exportToExcel(list, res);
+        } catch (IOException e){
+            throw new IOException(e);
+        }
+
+    }
+
+    private void exportToExcel(List<Person> personList, HttpServletResponse res) throws IOException {
+
+        /**
+         * excel sheet 생성
+         */
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Nurschool"); // 엑셀 sheet 이름
+        
+        /**
+         * header font style
+         */
+        XSSFFont headerXSSFFont = (XSSFFont) workbook.createFont();
+        headerXSSFFont.setColor(new XSSFColor(new byte[]{(byte) 255, (byte) 255, (byte) 255}, null));
+
+        /**
+         * header cell style
+         */
+        XSSFCellStyle headerXssfCellStyle = (XSSFCellStyle) workbook.createCellStyle();
+
+        // 테두리 설정
+        headerXssfCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerXssfCellStyle.setBorderRight(BorderStyle.THIN);
+        headerXssfCellStyle.setBorderTop(BorderStyle.THIN);
+        headerXssfCellStyle.setBorderBottom(BorderStyle.THIN);
+
+        // 배경 설정
+        headerXssfCellStyle.setFillForegroundColor(new XSSFColor(new byte[]{(byte) 34, (byte) 37, (byte) 41}, null));
+        headerXssfCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerXssfCellStyle.setFont(headerXSSFFont);
+
+        /**
+         * body cell style
+         */
+        XSSFCellStyle bodyXssfCellStyle = (XSSFCellStyle) workbook.createCellStyle();
+
+        // 테두리 설정
+        bodyXssfCellStyle.setBorderLeft(BorderStyle.THIN);
+        bodyXssfCellStyle.setBorderRight(BorderStyle.THIN);
+        bodyXssfCellStyle.setBorderTop(BorderStyle.THIN);
+        bodyXssfCellStyle.setBorderBottom(BorderStyle.THIN);
+
+        /**
+         * header data
+         */
+        int rowCount = 0; // 데이터가 저장될 행
+        String headerNames[] = new String[]{"학생개인번호", "학년", "반", "번호", "이름", "성별", "요양호자 여부", "구분"};
+
+        Row headerRow = null;
+        Cell headerCell = null;
+
+        headerRow = sheet.createRow(rowCount++);
+        for(int i=0; i<headerNames.length; i++) {
+            headerCell = headerRow.createCell(i);
+            headerCell.setCellValue(headerNames[i]); // 데이터 추가
+            headerCell.setCellStyle(headerXssfCellStyle); // 스타일 추가
+        }
+
+        /**
+         * body data
+         */
+        
+        for(Person person : personList) {
+            Row row = sheet.createRow(rowCount++);
+            row.createCell(0).setCellValue(person.getPermanent_id());
+            row.createCell(1).setCellValue(person.getGrade());
+            row.createCell(2).setCellValue(person.getClss());
+            row.createCell(3).setCellValue(person.getClass_id());
+            row.createCell(4).setCellValue(person.getName());
+            row.createCell(5).setCellValue(person.getGender());
+            row.createCell(6).setCellValue(person.getPatient_yn());
+            row.createCell(7).setCellValue(person.getPersontype().toString());
+        }
+
+        for (int i = 0; i < headerNames.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        /**
+         * download
+         */
+        String fileName = "spring_excel_download";
+
+        res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        ServletOutputStream servletOutputStream = res.getOutputStream();
+
+        workbook.write(servletOutputStream);
+        workbook.close();
+        servletOutputStream.flush();
+        servletOutputStream.close();
     }
 
     @Transactional
