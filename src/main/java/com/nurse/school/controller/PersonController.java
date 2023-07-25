@@ -21,6 +21,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -60,6 +62,22 @@ public class PersonController {
         Page<PersonDto> result = personService.getPeopleList(dto);
 
         return ResponseEntity.ok().body(result);
+    }
+
+    /**
+
+     * 학생, 교직원 목록 조회
+     * -엑셀다운로드
+     */
+    @PostMapping("/manager/students/download")
+    public ResponseEntity<Resource> peopleListToExcel(@RequestBody PersonDto dto, HttpServletResponse res) {
+        // 조회조건 학교-(이름, 반, 번호, 학생개인번호, 학생/교직원, 학년, 요양호자 등), 아무조건 없이 조회 경우 학교-데이터 생성 최근꺼 부터 DESC
+        try {
+            personService.getPeopleListForExport(dto, res);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } // ControllerAdvice에서 왜 처리 못해주나,, 알아봐야함
     }
 
     /**

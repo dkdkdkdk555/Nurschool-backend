@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 
-
+import java.util.List;
 import static com.nurse.school.entity.QPerson.person;
 
 public class PersonRepositoryImpl implements PersonRepositoryCustom{
@@ -91,5 +91,42 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom{
 
     }
 
+    @Override
+    public List<Person> findByPersonDto(PersonDto dto) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(dto.getSchoolId() != null){ // 학교
+            builder.and(person.school.id.eq(dto.getSchoolId()));
+        }
+        if(dto.getName() != null){ // 이름
+            builder.and(person.name.eq(dto.getName()));
+        }
+        if(dto.getGrade() != null){ // 학년
+            builder.and(person.grade.eq(dto.getGrade()));
+        }
+        if(dto.getClasses() != null){ // 반
+            builder.and(person.clss.eq(dto.getClasses()));
+        }
+        if(dto.getClass_id() != 0){ // 번호
+            builder.and(person.class_id.eq(dto.getClass_id()));
+        }
+        if(dto.getPerman_id() != null){ // 학생개인번호
+            builder.and(person.permanent_id.eq(dto.getPerman_id()));
+        }
+        if(dto.getGender() != null){ // 성별
+            builder.and(person.gender.eq(dto.getGender()));
+        }
+        if(dto.getPersontype() != null){ // 학생 및 교직원 여부
+            builder.and(person.persontype.eq(dto.getPersontype()));
+        }
+        if(dto.getPatient_yn() != null){ // 요양호자 여부
+            builder.and(person.patient_yn.eq(dto.getPatient_yn()));
+        }
+
+        return queryFactory
+                .selectFrom(person)
+                .where(builder)
+                .fetch();
+    }
 
 }
