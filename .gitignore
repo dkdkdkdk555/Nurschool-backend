@@ -41,3 +41,4 @@ gradlew
 *.bat
 src/main/resources/application.properties
 settings.gradle
+.DS_Store
