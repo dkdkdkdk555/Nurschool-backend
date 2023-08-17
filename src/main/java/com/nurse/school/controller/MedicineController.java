@@ -1,6 +1,8 @@
 package com.nurse.school.controller;
 
+import com.nurse.school.dto.medicine.MedicineDto;
 import com.nurse.school.response.Result;
+import com.nurse.school.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/manager/medicine")
 public class MedicineController {
 
+    @Autowired private MedicineService medicineService;
+
     /**
      *  약품 재고 조회 API
      *  - 전체 조회
@@ -17,6 +21,7 @@ public class MedicineController {
      */
     @GetMapping("")
     public ResponseEntity<Result> getMedicineList(){
+
         return null;
     }
 
@@ -25,7 +30,9 @@ public class MedicineController {
      *  - 수기등록
      */
     @PutMapping("")
-    public ResponseEntity<Result> addOneMedicine(){
+    public ResponseEntity<Result> addOneMedicine(@RequestBody MedicineDto dto){
+        MedicineDto createdDataInfo = medicineService.InsertNewMedicine(dto);
+
         return null;
     }
 
