@@ -1,6 +1,8 @@
 package com.nurse.school.dto.medicine;
 
+import com.nurse.school.entity.Medicine;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,18 +24,26 @@ public class MedicineDto {
     private String unit;
     private int quantity; // 몇 개
     private int capa; // 몇 박스
-    private String sideEffect;
+//    private String sideEffect;
 
     private int page;
 
-    public MedicineDto(Long schoolId, String medicine_name, String usage, String unit, int quantity, int capa, String sideEffect, int page) {
+    public MedicineDto(Long schoolId, String medicine_name, String usage, String unit, int quantity, int capa, int page) {
         this.schoolId = schoolId;
         this.medicine_name = medicine_name;
         this.usage = usage;
         this.unit = unit;
         this.quantity = quantity;
         this.capa = capa;
-        this.sideEffect = sideEffect;
+//        this.sideEffect = sideEffect;
         this.page = page;
+    }
+
+    public MedicineDto(Medicine medicine){
+        this.medicine_name = medicine.getName();
+        this.unit = medicine.getUnit();
+        this.usage = medicine.getUsage();
+        this.quantity = medicine.getQuantity();
+        this.capa = medicine.getCapa();
     }
 }

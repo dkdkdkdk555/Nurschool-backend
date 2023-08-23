@@ -5,6 +5,7 @@ import com.nurse.school.response.Result;
 import com.nurse.school.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +32,8 @@ public class MedicineController {
      */
     @PutMapping("")
     public ResponseEntity<Result> addOneMedicine(@RequestBody MedicineDto dto){
-        MedicineDto createdDataInfo = medicineService.InsertNewMedicine(dto);
-
-        return null;
+        MedicineDto newMedicineDto = medicineService.InsertNewMedicine(dto);
+        return new ResponseEntity(new Result<MedicineDto>(newMedicineDto), HttpStatus.CREATED);
     }
 
     /**
