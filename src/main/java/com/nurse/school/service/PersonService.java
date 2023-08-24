@@ -7,7 +7,7 @@ import com.nurse.school.entity.School;
 import com.nurse.school.exception.DoesntMatchExcelFormException;
 import com.nurse.school.exception.NoCreationDataException;
 import com.nurse.school.exception.NotFoundException;
-import com.nurse.school.repository.PersonRepository;
+import com.nurse.school.repository.person.PersonRepository;
 import com.nurse.school.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.FileNameUtils;
@@ -16,10 +16,8 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +39,7 @@ public class PersonService {
 
     @Transactional(readOnly = false)
     public PersonResponseDto insertPerson(PersonDto dto) throws NoCreationDataException{
-        // 중복 등록 여부 판단
+        // 중복 등록 여부 판단ㅔ
         Person dupl = personRepository.findPersonByPermanent_id(dto.getPerman_id());
         if(dupl != null){
             throw new NoCreationDataException("이미 등록된 학생/교직원이 있습니다!");

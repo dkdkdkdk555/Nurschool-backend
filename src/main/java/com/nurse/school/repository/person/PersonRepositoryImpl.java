@@ -1,7 +1,8 @@
-package com.nurse.school.repository;
+package com.nurse.school.repository.person;
 
 import com.nurse.school.dto.person.PersonDto;
 import com.nurse.school.entity.Person;
+import com.nurse.school.repository.person.PersonRepositoryCustom;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,7 +15,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import static com.nurse.school.entity.QPerson.person;
 
-public class PersonRepositoryImpl implements PersonRepositoryCustom{
+public class PersonRepositoryImpl implements PersonRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 

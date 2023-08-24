@@ -1,4 +1,4 @@
-package com.nurse.school.repository;
+package com.nurse.school.repository.person;
 
 import com.nurse.school.dto.person.PersonDto;
 import com.nurse.school.entity.Person;

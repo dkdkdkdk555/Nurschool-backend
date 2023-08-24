@@ -20,8 +20,9 @@ public class MedicineController {
      *  - 전체 조회
      *  - 약품 이름으로 단건 조회
      */
-    @GetMapping("")
-    public ResponseEntity<Result> getMedicineList(){
+    @GetMapping("/{page}")
+    public ResponseEntity<Result> getMedicineList(@PathVariable("page") int page){ // 0부터 시작
+
 
         return null;
     }
@@ -30,7 +31,7 @@ public class MedicineController {
      * 약품 재고 단건 추가 API
      *  - 수기등록
      */
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<Result> addOneMedicine(@RequestBody MedicineDto dto){
         MedicineDto newMedicineDto = medicineService.InsertNewMedicine(dto);
         return new ResponseEntity(new Result<MedicineDto>(newMedicineDto), HttpStatus.CREATED);
