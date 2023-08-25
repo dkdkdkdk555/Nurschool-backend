@@ -5,6 +5,7 @@ import com.nurse.school.response.Result;
 import com.nurse.school.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,10 @@ public class MedicineController {
      *  - 전체 조회
      *  - 약품 이름으로 단건 조회
      */
-    @GetMapping("/{page}")
-    public ResponseEntity<Result> getMedicineList(@PathVariable("page") int page){ // 0부터 시작
-
-
-        return null;
+    @PostMapping("/getMedicineList")
+    public ResponseEntity<Page> getMedicineList(@RequestBody MedicineDto dto){
+        Page<MedicineDto> result = medicineService.getMedicineList(dto);
+        return ResponseEntity.ok().body(result);
     }
 
     /**

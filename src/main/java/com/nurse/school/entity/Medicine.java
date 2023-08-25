@@ -27,7 +27,7 @@ public class Medicine extends BaseEntity {
     private School school;
 
     @Column(name = "stock_name")
-    private String name; // 이름
+    private String medicine_name; // 이름
 
     @Column(name = "stock_usage")
     private String usage; // 용도
@@ -41,17 +41,21 @@ public class Medicine extends BaseEntity {
     @Column(name = "stock_capa")
     private int capa; // 규격
 
+    @Column(name = "stock_quantity_x_capa")
+    private int capaXquantity; // 수량
+
 //    @Column(name = "stock_side_effect")
 //    private String sideEffect; // 부작용
 
     @Builder
-    public Medicine(School school, String name, String usage, String unit,
-                    int quantity, int capa) {
+    public Medicine(School school, String medicine_name, String usage, String unit,
+                    int quantity, int capa, int capaXquantity) {
         this.school = school;
-        this.name = name;
+        this.medicine_name = medicine_name;
         this.usage = usage;
         this.unit = unit;
         this.quantity = quantity;
         this.capa = capa;
+        this.capaXquantity = capaXquantity;
     }
 }

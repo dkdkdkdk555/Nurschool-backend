@@ -120,7 +120,7 @@ public class PersonService {
 
     @Transactional
     public Page<PersonDto> getPeopleList(PersonDto dto) throws NotFoundException{
-        PageRequest pageRequest = PageRequest.of(dto.getPage(), 5, Sort.by(Sort.Direction.ASC, "person_id"));
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), 10, Sort.by(Sort.Direction.ASC, "person_id"));
         Page<Person> pages = personRepository.findByPersonDto(dto, pageRequest);
         if(pages.getContent().isEmpty()){
             throw new NotFoundException("검색결과가 존재하지 않습니다.");

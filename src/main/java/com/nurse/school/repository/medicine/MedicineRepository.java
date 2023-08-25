@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Long>, MedicineRepositoryCustom {
 
-    @Query("select m from Medicine m where m.name = :name and m.school.id = :schoolId")
+    @Query("select m from Medicine m where m.medicine_name = :name and m.school.id = :schoolId")
     Medicine findMedicineByNameAndSchool(String name, Long schoolId); // stock_name
 
 }
