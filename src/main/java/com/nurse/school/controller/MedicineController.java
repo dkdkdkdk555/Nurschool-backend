@@ -4,9 +4,13 @@ import com.nurse.school.dto.medicine.MedicineDto;
 import com.nurse.school.response.Result;
 import com.nurse.school.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MedicineController {
 
     @Autowired private MedicineService medicineService;
+    // 파일 다운로드를 위한 io 유틸
+    private final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     /**
      *  약품 재고 조회 API
@@ -56,7 +62,24 @@ public class MedicineController {
      */
     @GetMapping("/getExcelForm")
     public ResponseEntity<Resource> downloadExcelForm(){
-        return null;
+        try {
+            // 파일 실제 경로 지정 및 로드
+            Resource resource = resourceLoader.getResource("classpath:" + "file/MedicineUploadForm_Nurschool.xls");
+
+            // 파일이 존재하는지 확인
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일을 반환하기 위핸 ResponseEntity 생성
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            // 파일 로드에 실패한 경우
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     /**
