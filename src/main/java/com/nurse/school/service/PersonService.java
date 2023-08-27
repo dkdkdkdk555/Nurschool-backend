@@ -72,7 +72,7 @@ public class PersonService {
         List<PersonDto> personList = new ArrayList<>();
 
         // 엑셀의 셀데이터를 가져와서 dto에 담기
-        List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 6);
+        List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 6, "person", "XSSF");
 
         if(listMap == null){
             throw new DoesntMatchExcelFormException("Excel 양식이 일치하지 않습니다. 올바른 양식의 Excel 파일을 업로드해 주세요.");

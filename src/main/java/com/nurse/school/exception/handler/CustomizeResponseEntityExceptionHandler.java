@@ -20,25 +20,36 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception exp, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exp.getMessage(), request.getDescription(false));
+        exp.printStackTrace();
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NoCreationDataException.class)
     public final ResponseEntity<ExceptionResponse> handleNoCreationDataExceptions(Exception exp, WebRequest request){
+        exp.printStackTrace();
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exp.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DoesntMatchExcelFormException.class)
     public final ResponseEntity<ExceptionResponse> handleAboutExcelExceptions(Exception exp, WebRequest request){
+        exp.printStackTrace();
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exp.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception exp, WebRequest request){
+        exp.printStackTrace();
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exp.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public final ResponseEntity<ExceptionResponse> handleNumberFormatExceptions(Exception exp, WebRequest request){
+        exp.printStackTrace();
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exp.getMessage() + "//업로드 파일의 형식이 일치하지 않습니다.", request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 }
