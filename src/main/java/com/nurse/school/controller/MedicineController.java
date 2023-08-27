@@ -87,9 +87,10 @@ public class MedicineController {
      *  - 단건 삭제
      *  - 복수건 삭제 (2&3) &으로 구분
      */
-    @DeleteMapping("/{medicIds}")
-    public ResponseEntity<Result> deleteMedicineInfo(@PathVariable("medicIds") String medicIds){
-        return null;
+    @DeleteMapping("/{stock_id}")
+    public ResponseEntity<Result> deleteMedicineInfo(@PathVariable("stock_id") String stock_id){
+        String result = medicineService.deleteMedicine(stock_id);
+        return new ResponseEntity<>(new Result(result), HttpStatus.NO_CONTENT);
     }
 
     /**

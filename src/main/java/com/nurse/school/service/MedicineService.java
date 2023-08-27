@@ -130,6 +130,27 @@ public class MedicineService {
         return count; // 등록건수 알림
     }
 
+    @Transactional
+    public String deleteMedicine(String stock_id) throws NotFoundException {
+        if(stock_id.contains("&")){ // 복수건
+            String[] personsArr = stock_id.split("&");
+            List<Long> list = new ArrayList<>();
+            for (String s : personsArr) {
+                list.add(Long.parseLong(s));
+            }
+            int n = medicineRepository.deleteMedicineByIds(list);
+            return n + "건 삭제";
+        } else { // 단건
+            Optional<Medicine> person = medicineRepository.findById(Long.parseLong(stock_id));
+            if(!person.isEmpty()){
+                medicineRepository.delete(person.get());
+                return "삭제완료";
+            } else{
+                throw new NotFoundException("삭제할 데이터가 존재하지 않습니다.");
+            }
+        }
+    }
+
 
     private Medicine makeMedicineStock(MedicineDto dto, School school){
         return Medicine.builder()

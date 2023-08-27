@@ -103,7 +103,7 @@ public class PersonController {
 
     /**
      * 삭제
-     * -단건&복수건 삭ㅈ[
+     * -단건&복수건 삭제
      * http://localhost:8080/manager/student/2&3 - &으로 구분
      */
     @DeleteMapping("/manager/student/{personIds}")
