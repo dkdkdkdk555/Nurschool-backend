@@ -1,8 +1,6 @@
 package com.nurse.school.service;
 
 import com.nurse.school.dto.medicine.MedicineDto;
-import com.nurse.school.dto.person.PersonDto;
-import com.nurse.school.dto.person.PersonResponseDto;
 import com.nurse.school.entity.Medicine;
 import com.nurse.school.entity.Person;
 import com.nurse.school.entity.School;
@@ -12,11 +10,7 @@ import com.nurse.school.exception.NotFoundException;
 import com.nurse.school.repository.medicine.MedicineRepository;
 import com.nurse.school.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.commons.compress.utils.FileNameUtils;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -151,6 +145,17 @@ public class MedicineService {
         }
     }
 
+    @Transactional
+    public MedicineDto updateMedicine(Long id, MedicineDto dto) throws RuntimeException {
+        long s = medicineRepository.updateDirect(dto, id);
+        if(s>0){
+            Optional<Medicine> opt = medicineRepository.findById(id);
+            Medicine medicine = opt.get();
+            return modelMapper.map(medicine, MedicineDto.class);
+        } else{
+            throw new RuntimeException("약품정보 수정에 실패하였습니다.");
+        }
+    }
 
     private Medicine makeMedicineStock(MedicineDto dto, School school){
         return Medicine.builder()

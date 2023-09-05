@@ -10,4 +10,6 @@ public interface MedicineRepositoryCustom {
 
     Page<Medicine> findByMedicineDto(MedicineDto dto, Pageable pageable);
 
+    long updateDirect(MedicineDto dto, Long id);
+
 }

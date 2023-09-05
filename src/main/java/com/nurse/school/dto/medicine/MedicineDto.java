@@ -18,6 +18,7 @@ public class MedicineDto {
 
     @NotNull
     private Long schoolId;
+    private Long id;
     @NotNull
     private String medicine_name;
     private String usage;

@@ -1,6 +1,8 @@
 package com.nurse.school.controller;
 
 import com.nurse.school.dto.medicine.MedicineDto;
+import com.nurse.school.dto.person.PersonResponseDto;
+import com.nurse.school.entity.Person;
 import com.nurse.school.response.Result;
 import com.nurse.school.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 
 @RestController
 @RequestMapping( "/manager/medicine")
@@ -97,9 +101,20 @@ public class MedicineController {
      * 약품 재고 수정 API
      *  - 단건 수정만
      */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Result> updateMedicineInfo(@PathVariable("id") Long id){
-        return null;
+    @PostMapping("/{id}")
+    public ResponseEntity<Result> updateMedicineInfo(@PathVariable("id") Long id,
+                                                     @RequestBody MedicineDto dto){
+        HttpHeaders headers = new HttpHeaders();
+        MedicineDto medicine =  medicineService.updateMedicine(id, dto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/manager/main/{id}")
+                .buildAndExpand(medicine.getId())
+                .toUri();
+        headers.setLocation(location);
+
+
+        return ResponseEntity.ok().headers(headers).body(new Result(medicine));
     }
 
 }
