@@ -49,11 +49,12 @@ public class MedicineRepositoryImpl implements MedicineRepositoryCustom{
 
     @Override
     public long updateDirect(MedicineDto dto, Long id) {
+
         JPAUpdateClause clause = queryFactory.update(medicine)
                 .set(medicine.quantity, dto.getQuantity())
                 .set(medicine.capa, dto.getCapa())
                 .set(medicine.capaXquantity, dto.getCapa() * dto.getQuantity())
-                .where(medicine.id.eq(id));
+                .where(medicine.id.eq(id).and(medicine.medicine_name.eq(dto.getMedicine_name())));
         if(dto.getMedicine_name() != null){
             clause.set(medicine.medicine_name, dto.getMedicine_name());
         }
