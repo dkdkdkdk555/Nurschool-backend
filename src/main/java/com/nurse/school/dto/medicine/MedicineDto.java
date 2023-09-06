@@ -2,6 +2,7 @@ package com.nurse.school.dto.medicine;
 
 import com.nurse.school.entity.Medicine;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MedicineDto {
 
     @NotNull
@@ -32,6 +34,7 @@ public class MedicineDto {
 
     public MedicineDto(Long schoolId, String medicine_name, String usage, String unit, int quantity, int capa, int page) {
         this.schoolId = schoolId;
+//        this.id = id;
         this.medicine_name = medicine_name;
         this.usage = usage;
         this.unit = unit;
