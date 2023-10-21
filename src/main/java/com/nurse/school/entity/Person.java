@@ -52,10 +52,12 @@ public class Person extends BaseEntity {
 
     private int class_id; // 반에서 번호
 
+    private String person_memo; // 메모
+
     @Builder
     public Person(School school, String permanent_id, String name, String gender,
                   LocalDate birthday, Persontype persontype, String patient_yn,
-                  String grade, String clss, int class_id) {
+                  String grade, String clss, int class_id, String person_memo) {
         this.school = school;
         this.permanent_id = permanent_id;
         this.name = name;
@@ -66,12 +68,13 @@ public class Person extends BaseEntity {
         this.grade = grade;
         this.clss = clss;
         this.class_id = class_id;
+        this.person_memo = person_memo;
     }
 
     @Builder(builderMethodName = "merger")
     public Person(Long id, School school, String permanent_id, String name, String gender,
                   LocalDate birthday, Persontype persontype, String patient_yn,
-                  String grade, String clss, int class_id) {
+                  String grade, String clss, int class_id, String person_memo) {
         this.id = id;
         this.school = school;
         this.permanent_id = permanent_id;
@@ -83,6 +86,7 @@ public class Person extends BaseEntity {
         this.grade = grade;
         this.clss = clss;
         this.class_id = class_id;
+        this.person_memo = person_memo;
     }
 
 

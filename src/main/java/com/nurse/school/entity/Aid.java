@@ -19,10 +19,7 @@ public class Aid {
     private Long id;
 
     @ManyToOne // 다대일 단방향
-    @JoinColumn(name = "document_id")
-    private Main main;
-
-    @OneToOne(mappedBy = "aid") // 일대일 양방향
+    @JoinColumn(name="doc_symp_id")
     private Symp symp;
 
     private String aid;

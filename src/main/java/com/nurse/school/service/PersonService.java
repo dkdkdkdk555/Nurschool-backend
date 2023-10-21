@@ -126,7 +126,7 @@ public class PersonService {
             throw new NotFoundException("검색결과가 존재하지 않습니다.");
         }
         Page<PersonDto> toMap = pages.map(p -> new PersonDto(p.getSchool().getId(), p.getId(), p.getGrade(), p.getClss(), p.getClass_id(),
-                p.getName(), p.getPermanent_id(), p.getGender(), p.getPersontype(), p.getPatient_yn()));
+                p.getName(), p.getPermanent_id(), p.getGender(), p.getPersontype(), p.getPatient_yn(), p.getPerson_memo()));
         return toMap;
     }
 

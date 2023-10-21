@@ -21,12 +21,8 @@ public class Symp {
     @JoinColumn(name = "document_id")
     private Main main; // FK
 
-    @OneToOne // 일대일 양방향
-    @JoinColumn(name = "doc_aid_id")
-    private Aid aid; // FK
-
     private String symptoms;
-    private String body_part;
+    private String body_part; // 일대다 단방향 연관관계 매핑은 복잡도 문제로 사용하지 않는다.
     private String symptoms_detail; //  varchar(200)
 
 }

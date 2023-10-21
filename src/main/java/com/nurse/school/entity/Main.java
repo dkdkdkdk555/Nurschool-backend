@@ -1,5 +1,6 @@
 package com.nurse.school.entity;
 
+import com.nurse.school.entity.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -12,21 +13,20 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "health_document_main")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Main {
+public class Main extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "person_id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "workspace_id")
     private School school;
 
-    private String permanent_id; // 학생고유번호
 
     private LocalDateTime visit_time; // 방문일시
 

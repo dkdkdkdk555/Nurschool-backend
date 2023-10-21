@@ -38,11 +38,13 @@ public class PersonDto {
     private Persontype persontype; // STAFF or STUDENT 널일 경우 학생으로
     // 요양호자 여부
     private String patient_yn; // 없으면 N
+    // 메모
+    private String person_memo;
 
     // 페이징관련
     private int page;
 
-    public PersonDto(Long schoolId, Long personId, String grade, String classes, int class_id, String name, String perman_id, String gender, Persontype persontype, String patient_yn) {
+    public PersonDto(Long schoolId, Long personId, String grade, String classes, int class_id, String name, String perman_id, String gender, Persontype persontype, String patient_yn, String person_memo) {
         this.schoolId = schoolId;
         this.personId = personId;
         this.grade = grade;
@@ -53,5 +55,6 @@ public class PersonDto {
         this.gender = gender;
         this.persontype = persontype;
         this.patient_yn = patient_yn;
+        this.person_memo = person_memo;
     }
 }
