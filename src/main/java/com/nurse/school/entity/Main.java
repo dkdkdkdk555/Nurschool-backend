@@ -2,6 +2,7 @@ package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "health_document_main")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Main extends BaseEntity {
 
@@ -21,7 +23,7 @@ public class Main extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "person_id")
-    private User user;
+    private Person person;
 
     @ManyToOne
     @JoinColumn(name = "workspace_id")

@@ -1,7 +1,9 @@
 package com.nurse.school.controller;
 
+import com.nurse.school.dto.main.HealthDocumentDto;
 import com.nurse.school.dto.person.PersonDto;
 import com.nurse.school.response.Result;
+import com.nurse.school.service.MainService;
 import com.nurse.school.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class MainController {
 
     @Autowired PersonService personService;
+    @Autowired MainService mainService;
 
     /**
      * 1.
@@ -36,10 +39,12 @@ public class MainController {
      * 복수건인 경우 하나를 선택하여 Key값(person_id)을 전달하여 해당 API를 호출한다.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Result> getHealthInfo(@PathVariable("id") Long id,
+    public ResponseEntity<Page> getHealthInfo(@PathVariable("id") Long id,
                                                 @RequestParam("page") int page){
 
-        return null;
+        Page<HealthDocumentDto> result = mainService.getDocumentList(id, page);
+
+        return ResponseEntity.ok().body(result);
     }
 
     /**
@@ -53,7 +58,7 @@ public class MainController {
     /**
      * 월별방문횟수 통계결과 조회 API
      */
-    @PutMapping
+    @PostMapping
     public ResponseEntity<Result> visitStatistics(){
         return null;
     }

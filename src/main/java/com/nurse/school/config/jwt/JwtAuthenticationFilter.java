@@ -2,6 +2,7 @@ package com.nurse.school.config.jwt;
 
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nurse.school.config.auth.PrincipalDetails;
 import com.nurse.school.entity.User;

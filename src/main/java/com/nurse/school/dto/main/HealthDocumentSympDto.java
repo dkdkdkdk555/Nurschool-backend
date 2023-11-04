@@ -1,5 +1,6 @@
 package com.nurse.school.dto.main;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,14 +12,21 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class HealthDocumentSympDto {
 
     private Long documentId;
-    private Long symptomsId;
+    private Long id;
 
     private String symptoms;
     private String symptoms_detail;
     private String body_part;
 
     private List<HealthDocumentAidDto> aidList;
+
+    public HealthDocumentSympDto(String symptoms, String body_part, List<HealthDocumentAidDto> aidList) {
+        this.symptoms = symptoms;
+        this.body_part = body_part;
+        this.aidList = aidList;
+    }
 }
