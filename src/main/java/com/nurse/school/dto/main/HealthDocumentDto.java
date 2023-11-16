@@ -23,7 +23,7 @@ public class HealthDocumentDto {
     private Long id;
 
     private String memo;
-    private LocalDateTime visit_time;
+    private String visit_time;
 
     private List<HealthDocumentSympDto> sympList;
 
@@ -37,7 +37,7 @@ public class HealthDocumentDto {
 //        this.sympList = getSympFromMain(main);
     }
 
-    public HealthDocumentDto(Long id, String memo, LocalDateTime visit_time, List<HealthDocumentSympDto> sympList) {
+    public HealthDocumentDto(Long id, String memo, String visit_time, List<HealthDocumentSympDto> sympList) {
         this.id = id;
         this.memo = memo;
         this.visit_time = visit_time;

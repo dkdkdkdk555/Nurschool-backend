@@ -2,6 +2,7 @@ package com.nurse.school.entity;
 
 import com.nurse.school.entity.common.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +35,11 @@ public class Main extends BaseEntity {
 
     private String memo; // 특이사항 등 메모
 
-    
-    
-
+    @Builder
+    public Main(Person person, School school, LocalDateTime visit_time, String memo) {
+        this.person = person;
+        this.school = school;
+        this.visit_time = visit_time;
+        this.memo = memo;
+    }
 }

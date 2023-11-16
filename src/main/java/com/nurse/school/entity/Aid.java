@@ -1,6 +1,7 @@
 package com.nurse.school.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -25,4 +26,10 @@ public class Aid {
     private String aid;
     private String aid_detail;
 
+    @Builder
+    public Aid(Symp symp, String aid, String aid_detail) {
+        this.symp = symp;
+        this.aid = aid;
+        this.aid_detail = aid_detail;
+    }
 }

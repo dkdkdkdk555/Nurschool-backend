@@ -5,8 +5,10 @@ import com.nurse.school.dto.person.PersonDto;
 import com.nurse.school.response.Result;
 import com.nurse.school.service.MainService;
 import com.nurse.school.service.PersonService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,8 +53,9 @@ public class MainController {
      * 보건일지 작성 API
      */
     @PutMapping
-    public ResponseEntity<Result> createHealthDoc(){
-        return null;
+    public ResponseEntity<Result> createHealthDoc(HealthDocumentDto dto){
+        Long documentId = mainService.insertDocument(dto);
+        return new ResponseEntity<>(new Result(documentId), HttpStatus.CREATED);
     }
 
     /**

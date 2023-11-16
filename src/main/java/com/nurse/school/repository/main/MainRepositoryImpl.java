@@ -1,11 +1,8 @@
 package com.nurse.school.repository.main;
 
-import com.nurse.school.dto.main.HealthDocuListDto;
 import com.nurse.school.dto.main.HealthDocumentAidDto;
 import com.nurse.school.dto.main.HealthDocumentDto;
 import com.nurse.school.dto.main.HealthDocumentSympDto;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,7 +11,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.nurse.school.entity.QMain.main;
 import static com.nurse.school.entity.QSymp.symp;

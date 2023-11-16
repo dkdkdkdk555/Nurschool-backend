@@ -1,6 +1,7 @@
 package com.nurse.school.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -25,4 +26,12 @@ public class Symp {
     private String body_part; // 일대다 단방향 연관관계 매핑은 복잡도 문제로 사용하지 않는다.
     private String symptoms_detail; //  varchar(200)
 
+
+    @Builder
+    public Symp(Main main, String symptoms, String body_part, String symptoms_detail) {
+        this.main = main;
+        this.symptoms = symptoms;
+        this.body_part = body_part;
+        this.symptoms_detail = symptoms_detail;
+    }
 }
