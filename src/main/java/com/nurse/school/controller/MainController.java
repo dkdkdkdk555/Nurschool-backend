@@ -53,9 +53,9 @@ public class MainController {
      * 보건일지 작성 API
      */
     @PutMapping
-    public ResponseEntity<Result> createHealthDoc(HealthDocumentDto dto){
+    public ResponseEntity<Result> createHealthDoc(@RequestBody HealthDocumentDto dto){
         Long documentId = mainService.insertDocument(dto);
-        return new ResponseEntity<>(new Result(documentId), HttpStatus.CREATED);
+        return new ResponseEntity<>(new Result(documentId, 0, "보건일지가 저장되었습니다."), HttpStatus.CREATED);
     }
 
     /**
