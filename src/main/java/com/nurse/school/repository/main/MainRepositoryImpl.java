@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.nurse.school.entity.QMain.main;
@@ -72,6 +73,11 @@ public class MainRepositoryImpl implements MainRepositoryCustom{
         List<HealthDocumentDto> resultList = query.fetch();
 
         return new PageImpl<>(resultList, pageable, resultList.size());
+    }
+
+    @Override
+    public List<LocalDate> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate) {
+        return null;
     }
 
 }

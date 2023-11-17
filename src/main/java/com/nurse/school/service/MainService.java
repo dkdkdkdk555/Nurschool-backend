@@ -22,6 +22,7 @@ import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -82,8 +83,13 @@ public class MainService {
                         .aid_detail(aidDto.getAid_detail()).build());
             }
         }
-
         return main.getId();
     }
 
+    @Transactional
+    public List<Map<String, Integer>> getStatistics(Long personId){
+        // 일단은 personId 로만 찾자..
+//        mainRepository.findVisitNum(personId, )
+        return null;
+    }
 }

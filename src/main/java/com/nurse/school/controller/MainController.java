@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/manager/main")
 public class MainController {
@@ -61,8 +64,9 @@ public class MainController {
     /**
      * 월별방문횟수 통계결과 조회 API
      */
-    @PostMapping
-    public ResponseEntity<Result> visitStatistics(){
+    @GetMapping("/statistic/{id}")
+    public ResponseEntity<Result> visitStatistics(@PathVariable("id") Long id){
+        List<Map<String, Integer>> result = mainService.getStatistics(id);
         return null;
     }
 }
