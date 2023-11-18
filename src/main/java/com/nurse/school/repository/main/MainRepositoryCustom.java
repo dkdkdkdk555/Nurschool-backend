@@ -11,5 +11,5 @@ public interface MainRepositoryCustom {
 
     Page<HealthDocumentDto> findListByid(Long personId, Pageable pageable);
 
-    List<LocalDate> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate);
+    List<Integer> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate);
 }

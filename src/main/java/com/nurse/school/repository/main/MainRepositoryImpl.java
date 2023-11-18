@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.nurse.school.entity.QMain.main;
@@ -76,8 +78,19 @@ public class MainRepositoryImpl implements MainRepositoryCustom{
     }
 
     @Override
-    public List<LocalDate> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate) {
-        return null;
+    public List<Integer> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate) {
+
+        return queryFactory.select(main.visit_time.month())
+                .from(main)
+                .where(
+                        main.person.id.eq(personId),
+                        main.visit_time.between(
+                                LocalDateTime.of(endDate, LocalTime.MAX),
+                                LocalDateTime.of(startDate, LocalTime.MIN)
+                        )
+                )
+                .fetch();
+
     }
 
 }

@@ -11,16 +11,21 @@ import com.nurse.school.repository.main.MainRepository;
 import com.nurse.school.repository.main.SympRepository;
 import com.nurse.school.repository.person.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -87,9 +92,37 @@ public class MainService {
     }
 
     @Transactional
-    public List<Map<String, Integer>> getStatistics(Long personId){
+    public Map<Integer, Integer> getStatistics(Long personId){
         // 일단은 personId 로만 찾자..
-//        mainRepository.findVisitNum(personId, )
-        return null;
+
+        //TODO: 셀렉트 시간 계산
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.minusMonths(6);
+
+        List<Integer> list = mainRepository.findVisitNum(personId, startDate, endDate);
+
+        Map<Integer, Integer> resultMap = new HashMap<>();
+
+        int cm = 0, count = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if(i>0){
+                if(cm==list.get(i)) {
+                    count++;
+                    if(i==(list.size()-1)){
+                        // 마지막 인덱스는 map저장
+                        resultMap.put(cm, count);
+                    }
+                } else {
+                    resultMap.put(cm, count);
+                    count = 1;
+                    cm = list.get(i);
+                }
+            } else {
+                cm = list.get(i);
+                count++; // 맨 처음꺼 숫자 카운트
+            }
+
+        }
+        return resultMap;
     }
 }

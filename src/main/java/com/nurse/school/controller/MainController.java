@@ -66,7 +66,7 @@ public class MainController {
      */
     @GetMapping("/statistic/{id}")
     public ResponseEntity<Result> visitStatistics(@PathVariable("id") Long id){
-        List<Map<String, Integer>> result = mainService.getStatistics(id);
-        return null;
+        Map<Integer, Integer> result = mainService.getStatistics(id);
+        return new ResponseEntity<>(new Result(result), HttpStatus.OK);
     }
 }
