@@ -33,7 +33,7 @@ public class HealthDocumentDto {
         this.personId = main.getPerson().getId();
         this.id = main.getId();
         this.memo = main.getMemo();
-        this.visit_time = getVisit_time();
+        this.visit_time = main.getVisit_time().toString();
 //        this.sympList = getSympFromMain(main);
     }
 

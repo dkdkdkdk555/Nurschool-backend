@@ -2,14 +2,12 @@ package com.nurse.school.repository.person;
 
 import com.nurse.school.dto.person.PersonDto;
 import com.nurse.school.entity.Person;
-import com.nurse.school.repository.person.PersonRepositoryCustom;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-
 import javax.persistence.EntityManager;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
                 .set(person.clss, dto.getClasses())
                 .set(person.name, dto.getName())
                 .set(person.gender, dto.getGender())
-                .set(person.patient_yn, dto.getPatient_yn())
+                .set(person.patient, dto.getPatient())
                 .set(person.permanent_id, dto.getPerman_id())
                 .where(person.id.eq(id))
                 .execute();
@@ -77,8 +75,8 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
         if(dto.getPersontype() != null){ // 학생 및 교직원 여부
             builder.and(person.persontype.eq(dto.getPersontype()));
         }
-        if(dto.getPatient_yn() != null){ // 요양호자 여부
-            builder.and(person.patient_yn.eq(dto.getPatient_yn()));
+        if(dto.getPatient() != null){ // 요양호자 여부
+            builder.and(person.patient.eq(dto.getPatient()));
         }
 
         QueryResults<Person> queryResults = queryFactory
@@ -120,8 +118,8 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
         if(dto.getPersontype() != null){ // 학생 및 교직원 여부
             builder.and(person.persontype.eq(dto.getPersontype()));
         }
-        if(dto.getPatient_yn() != null){ // 요양호자 여부
-            builder.and(person.patient_yn.eq(dto.getPatient_yn()));
+        if(dto.getPatient() != null){ // 요양호자 여부
+            builder.and(person.patient.eq(dto.getPatient()));
         }
 
         return queryFactory

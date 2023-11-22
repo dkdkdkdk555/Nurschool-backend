@@ -43,7 +43,7 @@ public class Person extends BaseEntity {
     @Column(name = "person_type")
     private Persontype persontype; // 학생(STUDENT) or 교직원(STAFF)
 
-    private String patient_yn; // 요양호자 여부
+    private String patient; // 요양호자 여부
 
     private String grade; // 학년
 
@@ -53,10 +53,14 @@ public class Person extends BaseEntity {
     private int class_id; // 반에서 번호
 
     private String person_memo; // 메모
+    
+    private String guardian_name; // 보호자 성함
+    
+    private String guardian_tel;  // 보호자 전번
 
     @Builder
     public Person(School school, String permanent_id, String name, String gender,
-                  LocalDate birthday, Persontype persontype, String patient_yn,
+                  LocalDate birthday, Persontype persontype, String patient,
                   String grade, String clss, int class_id, String person_memo) {
         this.school = school;
         this.permanent_id = permanent_id;
@@ -64,7 +68,7 @@ public class Person extends BaseEntity {
         this.gender = gender;
         this.birthday = birthday;
         this.persontype = persontype;
-        this.patient_yn = patient_yn;
+        this.patient = patient;
         this.grade = grade;
         this.clss = clss;
         this.class_id = class_id;
@@ -73,7 +77,7 @@ public class Person extends BaseEntity {
 
     @Builder(builderMethodName = "merger")
     public Person(Long id, School school, String permanent_id, String name, String gender,
-                  LocalDate birthday, Persontype persontype, String patient_yn,
+                  LocalDate birthday, Persontype persontype, String patient,
                   String grade, String clss, int class_id, String person_memo) {
         this.id = id;
         this.school = school;
@@ -82,7 +86,7 @@ public class Person extends BaseEntity {
         this.gender = gender;
         this.birthday = birthday;
         this.persontype = persontype;
-        this.patient_yn = patient_yn;
+        this.patient = patient;
         this.grade = grade;
         this.clss = clss;
         this.class_id = class_id;
