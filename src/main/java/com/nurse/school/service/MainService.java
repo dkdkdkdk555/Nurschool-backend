@@ -92,7 +92,7 @@ public class MainService {
     }
 
     @Transactional
-    public Map<Integer, Integer> getStatistics(Long personId){
+    public Map<String, Integer> getStatistics(Long personId){
         // 일단은 personId 로만 찾자..
 
         //TODO: 셀렉트 시간 계산
@@ -101,7 +101,7 @@ public class MainService {
 
         List<Integer> list = mainRepository.findVisitNum(personId, startDate, endDate);
 
-        Map<Integer, Integer> resultMap = new HashMap<>();
+        Map<String, Integer> resultMap = new HashMap<>();
 
         int cm = 0, count = 0;
         for (int i = 0; i < list.size(); i++) {
@@ -110,10 +110,10 @@ public class MainService {
                     count++;
                     if(i==(list.size()-1)){
                         // 마지막 인덱스는 map저장
-                        resultMap.put(cm, count);
+                        resultMap.put(convertToFormattedString(cm), count);
                     }
                 } else {
-                    resultMap.put(cm, count);
+                    resultMap.put(convertToFormattedString(cm), count);
                     count = 1;
                     cm = list.get(i);
                 }
@@ -124,5 +124,14 @@ public class MainService {
 
         }
         return resultMap;
+    }
+
+    private static String convertToFormattedString(Integer yearMonth) {
+        String yearMonthString = String.valueOf(yearMonth);
+
+        String year = yearMonthString.substring(0, 4);
+        String month = yearMonthString.substring(4);
+
+        return year + "-" + month;
     }
 }

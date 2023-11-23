@@ -80,7 +80,7 @@ public class MainRepositoryImpl implements MainRepositoryCustom{
     @Override
     public List<Integer> findVisitNum(Long personId, LocalDate startDate, LocalDate endDate) {
 
-        return queryFactory.select(main.visit_time.month())
+        return queryFactory.select(main.visit_time.yearMonth())
                 .from(main)
                 .where(
                         main.person.id.eq(personId),
