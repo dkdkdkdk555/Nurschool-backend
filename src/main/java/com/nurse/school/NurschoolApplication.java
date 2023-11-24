@@ -31,11 +31,6 @@ public class NurschoolApplication {
 //			}
 //		};
 //	}
-
-	@Bean
-	public AuditorAware<String> auditorProvider(){
-		return() -> Optional.of(UUID.randomUUID().toString());
-	}
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();

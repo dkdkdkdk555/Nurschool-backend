@@ -5,12 +5,18 @@ import com.nurse.school.config.jwt.JwtAuthenticationFilter;
 import com.nurse.school.config.jwt.JwtAuthorizationFilter;
 import com.nurse.school.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -47,5 +53,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * ROLE_ADMIN ⇒  시스템 관리자 권한
          *   - 모든 워크스페이스(보건일지)와 모든 학교 정보에 접근할 수 있는 권한
          */
+    }
+
+    @Bean
+    public AuditorAware<String> auditorProvider() {
+        return () -> {
+            // 로그인 한 사용자의 인증객체를 가져온다.
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return Optional.empty();
+            }
+            // 이름을 가져와 @EntityListeners(AuditingEntityListener.class) 가 선언된 클래스에서 사용할 수 있게 해줌.
+            return Optional.of(authentication.getName());
+        };
     }
 }

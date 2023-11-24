@@ -8,6 +8,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.persistence.EntityManager;
 
 import java.util.List;
@@ -34,7 +37,10 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
 
     @Override // 수기 수정
     public long updateDirect(PersonDto dto, Long id) {
-        return queryFactory
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        long updatedCount = queryFactory
                 .update(person)
                 .set(person.grade, dto.getGrade())
                 .set(person.class_id, dto.getClass_id())
@@ -45,6 +51,17 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
                 .set(person.permanent_id, dto.getPerman_id())
                 .where(person.id.eq(id))
                 .execute();
+
+        if (updatedCount > 0) {
+            // 업데이트가 성공한 경우에만 Auditing 정보를 업데이트
+            queryFactory
+                    .update(person)
+                    .set(person.updatedBy, authentication.getName())
+                    .where(person.id.eq(id))
+                    .execute();
+        }
+
+        return updatedCount;
     }
 
     @Override
