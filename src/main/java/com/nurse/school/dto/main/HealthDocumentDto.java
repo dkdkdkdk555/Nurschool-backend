@@ -1,6 +1,7 @@
 package com.nurse.school.dto.main;
 
 import com.nurse.school.entity.Main;
+import com.nurse.school.entity.Symp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class HealthDocumentDto {
     private Long id;
 
     private String memo;
-    private String visit_time;
+    private LocalDateTime visit_time;
 
     private List<HealthDocumentSympDto> sympList;
 
@@ -33,11 +34,11 @@ public class HealthDocumentDto {
         this.personId = main.getPerson().getId();
         this.id = main.getId();
         this.memo = main.getMemo();
-        this.visit_time = main.getVisit_time().toString();
-//        this.sympList = getSympFromMain(main);
+        this.visit_time = main.getVisit_time();
+//        this.sympList =
     }
 
-    public HealthDocumentDto(Long id, String memo, String visit_time, List<HealthDocumentSympDto> sympList) {
+    public HealthDocumentDto(Long id, String memo, LocalDateTime visit_time, List<HealthDocumentSympDto> sympList) {
         this.id = id;
         this.memo = memo;
         this.visit_time = visit_time;
