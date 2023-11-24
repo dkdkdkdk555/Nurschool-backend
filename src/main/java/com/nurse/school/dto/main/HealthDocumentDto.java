@@ -24,7 +24,7 @@ public class HealthDocumentDto {
     private Long id;
 
     private String memo;
-    private LocalDateTime visit_time;
+    private String visit_time;
 
     private List<HealthDocumentSympDto> sympList;
 
@@ -34,14 +34,24 @@ public class HealthDocumentDto {
         this.personId = main.getPerson().getId();
         this.id = main.getId();
         this.memo = main.getMemo();
-        this.visit_time = main.getVisit_time();
+        this.visit_time = main.getVisit_time().toString();
 //        this.sympList =
     }
 
+    public HealthDocumentDto(Long schoolId, Long personId, Long id, String memo, LocalDateTime visit_time, List<HealthDocumentSympDto> sympList) {
+        this.schoolId = schoolId;
+        this.personId = personId;
+        this.id = id;
+        this.memo = memo;
+        this.visit_time = visit_time.toString();
+        this.sympList = sympList;
+    }
+
+    // MainRepositoryImpl. findListByid 에서 사용하는 생성자
     public HealthDocumentDto(Long id, String memo, LocalDateTime visit_time, List<HealthDocumentSympDto> sympList) {
         this.id = id;
         this.memo = memo;
-        this.visit_time = visit_time;
+        this.visit_time = visit_time.toString();
         this.sympList = sympList;
     }
 }

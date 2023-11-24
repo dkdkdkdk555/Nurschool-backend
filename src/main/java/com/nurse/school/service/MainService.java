@@ -67,7 +67,7 @@ public class MainService {
         Main main = mainRepository.save(Main.builder()
                                 .person(person.get())
                                 .school(school.get())
-                                .visit_time(LocalDateTime.now()) // 방문시간과 작성시간이 다를 수 있으므로 프론트에서 입력받는다.
+                                .visit_time(LocalDateTime.parse(dto.getVisit_time(), formatter)) // 방문시간과 작성시간이 다를 수 있으므로 프론트에서 입력받는다.
                                 .memo(dto.getMemo()).build());
         //TODO: 증상 저장
         List<HealthDocumentSympDto> sympList = dto.getSympList();
