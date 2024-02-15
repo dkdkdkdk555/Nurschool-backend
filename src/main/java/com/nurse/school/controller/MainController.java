@@ -29,8 +29,8 @@ public class MainController {
      * 단건 -> [보건일지List] 조회 API로 리다이렉트
      * 복수건 -> List<Dto> 목록 리턴 -> 사용자 선택
      */
-    @GetMapping
-    public ResponseEntity<Page> getPeopleInfo(PersonDto dto){
+    @PostMapping
+    public ResponseEntity<Page> getPeopleInfo(@RequestBody PersonDto dto){
 
         Page<PersonDto> result = personService.getPeopleList(dto);
 
