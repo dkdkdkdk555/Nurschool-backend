@@ -31,7 +31,6 @@ public class NurschoolApplication {
 //			}
 //		};
 //	}
-	@Bean
 	public BCryptPasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}

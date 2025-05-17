@@ -18,6 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.interfaces.RSAKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
 import com.auth0.jwt.JWT;
@@ -55,14 +58,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // authentication 객체가 Security session 영역에 저장을 해야하고 그방법이 return
             return authentication;
         } catch (IOException e) {
-            e.printStackTrace(); // 에러낫을때 떠넘겨 버리면 밑에 코드가 unreacheable 되서 컴파일 에러
+            throw new RuntimeException("로그인 요청 처리 중 오류 발생", e);
         }
-        // 2. 정상인지 로그인 시도를 authenticationManager로 하면 PrincipalDetailsService loadUserByUsername() 가 실행됨
-
-        // 3. PrincipalDetails 를 세션에 담고 => 세션에 값이 있어야 권한 관리가 된다. (권한관리 안할거면 세션에 안담아도 됨)
-
-        // 4. JWT 토큰을 만들어서 응답해주면
-        return null;
     }
 
     // attemptAutentication 실행 후 인증이 정상적으로 되었으면 successfulAuthentication 함수가 실행됨
@@ -71,14 +68,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
-        // Hash암호방식
-        String jwtToken = JWT.create()
-                .withSubject("욱하토큰") // 토큰이름 (별의미없음)
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 유효시간
-                .withClaim("id", principalDetails.getUser().getId())
-                .withClaim("loginId", principalDetails.getUser().getLoginId())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET)); // 내 서버만 아는 고유한 값이 있어야함
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+ jwtToken); // 헤더에 담겨서 클라이언트에 리턴
+        try {
+            RSAPrivateKey privateKey = RSAKeyUtil.getPrivateKey(JwtProperties.PRIVATE_KEY_PATH);
+            String jwtToken = JWT.create()
+                    .withSubject("욱하토큰")
+                    .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                    .withClaim("id", principalDetails.getUser().getLoginId())
+                    .withClaim("loginId", principalDetails.getUser().getLoginId())
+                    .sign(Algorithm.RSA256(null, privateKey));
+            response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        } catch (Exception e){
+            throw new RuntimeException("JWT 생성 실패", e);
+        }
     }
 }

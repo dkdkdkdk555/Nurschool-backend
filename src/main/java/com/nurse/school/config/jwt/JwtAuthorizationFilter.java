@@ -1,7 +1,9 @@
 package com.nurse.school.config.jwt;
 
 
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nurse.school.config.auth.PrincipalDetails;
 import com.nurse.school.entity.User;
 import com.nurse.school.repository.UserRepository;
@@ -16,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
 
 import com.auth0.jwt.JWT;
 
@@ -34,37 +37,48 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         this.userRepository = userRepository;
     }
 
-    // 인증이나 권한이 필요한 주소요청이 있을 때 해당 핉를 타게 됨
+    // 인증이나 권한이 필요한 주소요청이 있을 때 해당 필터를 타게 됨
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-//        System.out.println("인증이나 권한이 필요한 주소 요청이 됨.");
-        String jwtHeader = request.getHeader("Authorization");
 
-        // header 가 있는지 확인
-        if(jwtHeader == null || !jwtHeader.startsWith("Bearer")){
+        String header = request.getHeader(JwtProperties.HEADER_STRING);
+
+        // 1. 토큰 존재 여부 확인
+        if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // JWT 토큰을 검증해서 정상적인 사용자인지 확인
-        String jwtToken = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
-        String loginId = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("loginId").asString();
+        // 2. 토큰 추출
+        String token = header.replace(JwtProperties.TOKEN_PREFIX, "");
 
-        // 서명이 정상적으로 됨
-        if(loginId!=null){
-            User user = userRepository.findUserByLoginId(loginId);
+        try {
+            // 3. 공개키 로딩
+            RSAPublicKey publicKey = RSAKeyUtil.getPublicKey(JwtProperties.PUBLIC_KEY_PATH);
 
-            PrincipalDetails principalDetails = new PrincipalDetails(user);
-            // JWT 토큰 서명이 정상이면 Authentication 객체를 만들어줌
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
-            // null 넣는 이유는 로그인할게 아니니까,, 인증만 했으면 됬으니
+            // 4. 검증 및 payload 추출
+            JWTVerifier verifier = JWT.require(Algorithm.RSA256(publicKey, null)).build();
+            DecodedJWT decodedJWT = verifier.verify(token);
+            String loginId = decodedJWT.getClaim("loginId").asString();
 
-            // 강제로 시큐리티 세션에 접근하여 Authentication 객체를 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 5. 사용자 조회 및 인증객체 생성
+            if (loginId != null) {
+                User user = userRepository.findUserByLoginId(loginId);
+                PrincipalDetails principalDetails = new PrincipalDetails(user);
 
-            chain.doFilter(request, response);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        principalDetails, null, principalDetails.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("JWT 검증 실패", e);
         }
+
+        // 6. 다음 필터로 진행
+        chain.doFilter(request, response);
     }
+
 }
